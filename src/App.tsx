@@ -51,7 +51,7 @@ export default function App() {
       <Screen onOpenCaseFile={() => setCaseFileOpen(true)} />
 
       <footer style={{ textAlign: "center", padding: "40px 0 16px", fontSize: "0.85rem", color: "var(--muted)" }}>
-        Made by <a href="https://quasarbright.github.io" target="_blank" rel="noreferrer">Mike DeLmonaco</a>
+        Made by <a href="https://quasarbright.github.io" target="_blank" rel="noreferrer">Mike Delmonaco</a>
       </footer>
 
       {settingsOpen && <SettingsModal dismissable onClose={() => setSettingsOpen(false)} />}
