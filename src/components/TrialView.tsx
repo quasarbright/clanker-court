@@ -100,7 +100,7 @@ function ObjectionControl({ stage, question }: { stage: "direct" | "cross"; ques
   return (
     <div className="controls controls-inline">
       <h3>Opposing counsel asks:</h3>
-      <p className="card" style={{ marginBottom: 12 }}>"{question}"</p>
+      <p className="card" style={{ marginBottom: 12, overflow: "hidden" }}>"{question}"</p>
       <p className="muted" style={{ marginBottom: 8 }}>Object, or let the witness answer.</p>
       <div className="objbtns">
         {reasons.map((r) => (
@@ -127,7 +127,7 @@ export function TrialView({ onOpenCaseFile: _ }: { onOpenCaseFile: () => void })
   const prompt = playerInput(state);
 
   return (
-    <div>
+    <div style={{ maxWidth: "100%", overflowX: "hidden" }}>
       <div className="topbar">
         <span className="tag">{state.caseFile?.title}</span>
         <span className="tag">You: {state.playerRole}</span>

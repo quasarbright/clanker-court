@@ -60,7 +60,10 @@ export function entry(
   speaker: string,
   text: string,
 ): TranscriptEntry {
-  return { id: crypto.randomUUID(), kind, speaker, text };
+  const id = typeof crypto.randomUUID === "function"
+    ? crypto.randomUUID()
+    : Math.random().toString(36).slice(2) + Date.now().toString(36);
+  return { id, kind, speaker, text };
 }
 
 // What the human player must do right now. null means an automatic agent step is due.

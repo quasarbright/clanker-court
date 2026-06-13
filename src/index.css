@@ -79,7 +79,7 @@ button.danger { border-color: var(--danger); color: var(--danger); }
 
 input, textarea, select {
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 1rem;
   background: var(--bg);
   color: var(--ink);
   border: 1px solid var(--line);
@@ -102,6 +102,8 @@ label { font-size: 0.85rem; color: var(--muted); display: block; margin-bottom: 
   border: 1px solid var(--line);
   border-radius: 10px;
   padding: 12px 14px;
+  overflow-wrap: break-word;
+  min-width: 0;
 }
 
 .tag {
@@ -120,7 +122,7 @@ ul.facts li { margin: 4px 0; }
 .transcript { display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
 .entry { border-left: 3px solid var(--line); padding: 6px 0 6px 12px; }
 .entry .who { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); }
-.entry .what { margin-top: 2px; white-space: pre-wrap; line-height: 1.45; }
+.entry .what { margin-top: 2px; white-space: pre-wrap; line-height: 1.45; overflow-wrap: break-word; word-break: break-word; }
 .entry.kind-system { border-color: var(--accent-2); font-style: italic; }
 .entry.kind-system .what { color: var(--muted); }
 .entry.kind-question { border-color: var(--accent); }
@@ -136,6 +138,9 @@ ul.facts li { margin: 4px 0; }
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 16px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   /* Extra bottom padding clears Safari's dynamic tab bar (≈49px) + safe area notch */
   padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px) + 50px);
   margin-top: 8px;
@@ -170,4 +175,5 @@ ul.facts li { margin: 4px 0; }
 .modal { max-width: 460px; width: 100%; } /* settings modal */
 
 .objbtns { display: flex; flex-wrap: wrap; gap: 8px; }
+.objbtns button { flex: 1 1 auto; min-width: 0; word-break: break-word; }
 .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
