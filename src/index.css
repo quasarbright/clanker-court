@@ -150,7 +150,7 @@ ul.facts li { margin: 4px 0; }
   position: fixed; inset: 0; background: rgba(0,0,0,0.6);
   display: flex; align-items: center; justify-content: center; padding: 18px; z-index: 50;
 }
-.modal { max-width: 460px; width: 100%; }
+.modal { max-width: 460px; width: 100%; } /* settings modal */
 
 .objbtns { display: flex; flex-wrap: wrap; gap: 8px; }
 .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }

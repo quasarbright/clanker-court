@@ -4,19 +4,36 @@ export function CaseFileModal({ caseFile, onClose }: { caseFile: CaseFile; onClo
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div
-        className="panel modal stack"
-        style={{ maxHeight: "80vh", overflowY: "auto" }}
+        className="panel stack"
+        style={{
+          position: "relative",
+          width: "min(860px, 95vw)",
+          maxHeight: "90vh",
+          overflowY: "auto",
+        }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="row" style={{ justifyContent: "space-between", alignItems: "flex-start" }}>
-          <div>
-            <span className="tag">Police case file</span>
-            <h2 style={{ marginTop: 6 }}>{caseFile.title}</h2>
-            <p className="muted">
-              Charge against {caseFile.defendant.name}: <strong>{caseFile.charge}</strong>
-            </p>
-          </div>
-          <button onClick={onClose} style={{ flexShrink: 0 }}>✕ Close</button>
+        <button
+          onClick={onClose}
+          style={{
+            position: "sticky",
+            top: 0,
+            alignSelf: "flex-end",
+            zIndex: 10,
+            padding: "4px 10px",
+            fontSize: "1rem",
+            lineHeight: 1,
+          }}
+        >
+          ✕
+        </button>
+
+        <div>
+          <span className="tag">Police case file</span>
+          <h2 style={{ marginTop: 6 }}>{caseFile.title}</h2>
+          <p className="muted">
+            Charge against {caseFile.defendant.name}: <strong>{caseFile.charge}</strong>
+          </p>
         </div>
 
         <div className="card"><p style={{ margin: 0 }}>{caseFile.summary}</p></div>
