@@ -129,6 +129,7 @@ ul.facts li { margin: 4px 0; }
 .entry.kind-opening, .entry.kind-closing { border-color: var(--accent); }
 
 .controls { position: sticky; bottom: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-top: 8px; }
+.controls.controls-inline { position: static; }
 .controls h3 { margin: 0 0 10px; }
 
 .busy { color: var(--accent); font-style: italic; }

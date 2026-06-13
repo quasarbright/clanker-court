@@ -98,7 +98,7 @@ function ObjectionControl({ stage, question }: { stage: "direct" | "cross"; ques
   const submit = useGame((s) => s.submitObjection);
   const reasons = objectionsForStage(stage);
   return (
-    <div className="controls">
+    <div className="controls controls-inline">
       <h3>Opposing counsel asks:</h3>
       <p className="card" style={{ marginBottom: 12 }}>"{question}"</p>
       <p className="muted" style={{ marginBottom: 8 }}>Object, or let the witness answer.</p>
