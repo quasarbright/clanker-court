@@ -1,0 +1,59 @@
+import { useState, useEffect } from "react";
+import { useGame } from "./store/gameStore";
+import { ApiKeyGate, SettingsModal } from "./components/ApiKeyGate";
+import { SetupScreen } from "./components/SetupScreen";
+import { CaseFileScreen } from "./components/CaseFileScreen";
+import { CaseFileModal } from "./components/CaseFileModal";
+import { TrialView } from "./components/TrialView";
+import { VerdictScreen } from "./components/VerdictScreen";
+
+function Screen({ onOpenCaseFile }: { onOpenCaseFile: () => void }) {
+  const phase = useGame((s) => s.phase);
+  const verdict = useGame((s) => s.verdict);
+
+  useEffect(() => {
+    if (verdict) window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [verdict]);
+
+  if (phase === "setup") return <SetupScreen />;
+  if (phase === "caseFile") return <CaseFileScreen />;
+  if (phase === "verdict" && verdict) return <VerdictScreen />;
+  return <TrialView onOpenCaseFile={onOpenCaseFile} />;
+}
+
+export default function App() {
+  const error = useGame((s) => s.error);
+  const dismissError = useGame((s) => s.dismissError);
+  const phase = useGame((s) => s.phase);
+  const caseFile = useGame((s) => s.caseFile);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [caseFileOpen, setCaseFileOpen] = useState(false);
+
+  const inTrial = phase !== "setup" && phase !== "caseFile";
+
+  return (
+    <ApiKeyGate>
+      <header className="site-header">
+        <span className="site-title">⚖️ Clanker Court</span>
+        {inTrial && caseFile && (
+          <button onClick={() => setCaseFileOpen(true)}>📋 Case File</button>
+        )}
+        <button onClick={() => setSettingsOpen(true)}>⚙️ Settings</button>
+      </header>
+
+      {error && (
+        <div className="banner error">
+          <span>{error}</span>
+          <button onClick={dismissError}>Dismiss</button>
+        </div>
+      )}
+
+      <Screen onOpenCaseFile={() => setCaseFileOpen(true)} />
+
+      {settingsOpen && <SettingsModal dismissable onClose={() => setSettingsOpen(false)} />}
+      {caseFileOpen && caseFile && (
+        <CaseFileModal caseFile={caseFile} onClose={() => setCaseFileOpen(false)} />
+      )}
+    </ApiKeyGate>
+  );
+}
