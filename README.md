@@ -1,56 +1,43 @@
 # ⚖️ Clanker Court
 
-An LLM-powered courtroom game. You play a **prosecutor** or **defense attorney**; every
-other participant — witnesses, opposing counsel, the judge, and the jury — is an AI agent.
-Generate a case, examine witnesses, object, give closing arguments, and let the jury decide.
+An LLM-powered courtroom trial game. You play a **prosecutor** or **defense attorney**; every other participant — witnesses, opposing counsel, the judge, and the jury — is an AI agent.
 
-It's a **static site**. All model calls happen in your browser against
-[OpenRouter](https://openrouter.ai); you supply your own API key (stored only in your
-browser's `localStorage`). No backend, no server-side secrets.
+Generate a case, examine witnesses, object, give opening and closing arguments, and let the jury decide. Find out at the end whether the defendant was actually guilty.
 
-## Run it
-
-```bash
-npm install
-npm run dev      # http://localhost:5173
-npm run build    # static output in dist/ (deploy to GitHub Pages, Netlify, etc.)
-```
-
-On first load you'll be asked for an OpenRouter API key and a model. Default model is
-`openai/gpt-4o-mini` (cheap + widely available). Change it any time via ⚙️ Settings.
+**Live:** https://quasarbright.github.io/clanker-court/
 
 ## How it works
 
-**Setup pipeline** (each step is one LLM agent):
-1. **Story Generator** invents the complete true story — crime, charge, the people involved,
-   the timeline, and whether the defendant is actually guilty.
-2. **POI Builder** turns each person into a first-person *knowledge brief* containing only
-   what that person could plausibly know. The witness agents receive **only their own brief** —
-   the full true story never reaches them, so they can't leak what they didn't witness, and
-   they answer "I don't know" rather than hallucinate.
-3. **Police** agent produces the redacted case file both lawyers (and the judge/jury) see —
-   established facts plus deliberate open questions.
-4. **Court** agent writes personas for the judge, jury, and opposing counsel.
+All LLM calls happen in your browser against [OpenRouter](https://openrouter.ai). You supply your own API key (stored only in your browser's `localStorage`). No backend, no server-side secrets.
 
-**Trial loop** (`src/game/engine.ts`) follows the sequence in `prompt.md`: openings →
-prosecution witnesses → defense witnesses → closings → verdict. Each witness gets a direct
-examination by the calling side and a cross by the other; each examination runs up to 10
-questions or until "no further questions". After every question the opposing side may object
-(leading is only objectionable on direct; out-of-scope only on cross), and the judge rules.
-A witness, once called, can't be recalled. The defendant may plead the Fifth; other witnesses
-must answer.
+**Setup pipeline** (each step is one LLM call):
+1. **Story Generator** — invents the complete true story: crime, charge, the people involved, a timeline, physical evidence, and whether the defendant is actually guilty.
+2. **POI Builder** — turns each person into a first-person memory narrative containing only what they could plausibly know. Witnesses receive **only their own brief** at runtime — the full truth never reaches them.
+3. **Police** — writes the redacted case file both lawyers receive: established facts, evidence, open questions. Written impartially, without access to the hidden truth.
+4. **Court** — writes personas for the judge, jury, and opposing counsel.
 
-## Layout
+**Trial loop:** openings → prosecution witnesses → defense witnesses → closings → jury verdict. Each witness gets a direct examination and a cross; each examination runs up to 3 questions or until "no further questions". After every question the opposing side may object, and the judge rules. The jury deliberates from the trial transcript only — no pre-read documents.
 
-```
-src/
-  llm/openrouter.ts     OpenRouter fetch client + tolerant JSON parsing
-  agents/               one module per agent (story, poi, police, court, witness, counsel, judge, jury)
-  game/                 types, fixed objection list, trial state machine
-  store/                zustand store (async orchestration) + settings (localStorage)
-  components/           ApiKeyGate, SetupScreen, CaseFileScreen, TrialView, VerdictScreen
+## Development
+
+```bash
+npm install
+npm run dev       # dev server at http://localhost:5173
+npm run build     # production build → dist/
+npm run preview   # preview the production build locally
 ```
 
-## Not yet built
+## Deploy to GitHub Pages
 
-- PvP (a human opposing counsel) — see `prompt.md` "future ideas".
+```bash
+npm run deploy
+```
+
+This builds the project and pushes `dist/` to the `gh-pages` branch. Make sure the repo's GitHub Pages source is set to the `gh-pages` branch in Settings → Pages.
+
+## Stack
+
+- React 19 + TypeScript + Vite
+- Zustand for state
+- OpenRouter (OpenAI-compatible REST API)
+- No backend — fully static, deployable anywhere
