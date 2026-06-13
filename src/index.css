@@ -19,12 +19,15 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
+  overflow-x: hidden;
 }
 
 #root {
   max-width: 880px;
   margin: 0 auto;
   padding: 0 18px 80px;
+  /* prevent any child from causing horizontal scroll */
+  min-width: 0;
 }
 
 .site-header {
@@ -128,7 +131,17 @@ ul.facts li { margin: 4px 0; }
 .entry.kind-verdict { border-color: var(--accent); background: rgba(201,162,39,0.08); padding: 12px; border-radius: 8px; }
 .entry.kind-opening, .entry.kind-closing { border-color: var(--accent); }
 
-.controls { position: sticky; bottom: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-top: 8px; }
+.controls {
+  position: sticky;
+  bottom: 0;
+  bottom: env(safe-area-inset-bottom, 0);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  margin-top: 8px;
+}
 .controls.controls-inline { position: static; }
 .controls h3 { margin: 0 0 10px; }
 
