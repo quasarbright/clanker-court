@@ -15,19 +15,22 @@
 
 * { box-sizing: border-box; }
 
-body {
+html, body {
   margin: 0;
+  overflow-x: clip;
+}
+
+body {
   background: var(--bg);
   color: var(--ink);
-  overflow-x: hidden;
 }
 
 #root {
   max-width: 880px;
   margin: 0 auto;
   padding: 0 18px 80px;
-  /* prevent any child from causing horizontal scroll */
   min-width: 0;
+  overflow-x: hidden;
 }
 
 .site-header {
@@ -89,7 +92,7 @@ input, textarea, select {
   padding: 9px 11px;
   width: 100%;
 }
-textarea { resize: vertical; min-height: 90px; }
+textarea { resize: vertical; min-height: 90px; max-width: 100%; }
 label { font-size: 0.85rem; color: var(--muted); display: block; margin-bottom: 4px; }
 
 .panel {
@@ -134,13 +137,20 @@ ul.facts li { margin: 4px 0; }
 .controls {
   position: sticky;
   bottom: 0;
-  bottom: env(safe-area-inset-bottom, 0);
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 16px;
-  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  /* Extra bottom padding clears Safari's dynamic tab bar (≈49px) + safe area notch */
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px) + 50px);
   margin-top: 8px;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+@supports not (padding-bottom: env(safe-area-inset-bottom)) {
+  .controls { padding-bottom: 16px; }
 }
 .controls.controls-inline { position: static; }
 .controls h3 { margin: 0 0 10px; }
