@@ -157,7 +157,10 @@ export function TrialView({ onOpenCaseFile: _ }: { onOpenCaseFile: () => void })
       ) : (
         <div className="controls">
           <p className="busy">
-            <span className="spin">⏳</span> Waiting on the court...
+            <span className="spin">⏳</span>{" "}
+            {state.multiplayerRole
+              ? `Waiting for opposing counsel...`
+              : "Waiting on the court..."}
           </p>
         </div>
       )}

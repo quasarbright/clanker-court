@@ -26,8 +26,19 @@ export default function App() {
   const dismissError = useGame((s) => s.dismissError);
   const phase = useGame((s) => s.phase);
   const caseFile = useGame((s) => s.caseFile);
+  const joinGame = useGame((s) => s.joinGame);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [caseFileOpen, setCaseFileOpen] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("join");
+    if (code) {
+      history.replaceState(null, "", window.location.pathname);
+      joinGame(code);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const inTrial = phase !== "setup" && phase !== "caseFile";
 

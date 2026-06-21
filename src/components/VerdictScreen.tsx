@@ -1,10 +1,15 @@
 import { useGame } from "../store/gameStore";
 
 export function VerdictScreen() {
-  const { verdict, trueStory, caseFile, reset } = useGame();
+  const { verdict, trueStory, caseFile, playerRole, reset } = useGame();
   if (!verdict) return null;
 
   const correct = trueStory ? verdict.guilty === trueStory.groundTruthGuilty : null;
+
+  // Prosecution wins on guilty, defense wins on not guilty.
+  const playerWon = playerRole === "prosecutor" ? verdict.guilty : !verdict.guilty;
+  const outcomeLabel = playerWon ? "You won" : "You lost";
+  const outcomeColor = playerWon ? "var(--accent)" : "var(--danger)";
 
   return (
     <div className="stack">
@@ -12,6 +17,9 @@ export function VerdictScreen() {
         <span className="tag">Verdict</span>
         <h1>{verdict.guilty ? "GUILTY" : "NOT GUILTY"}</h1>
         <p className="muted">{caseFile?.defendant.name} — {caseFile?.charge}</p>
+        <p style={{ fontSize: "1.2rem", fontWeight: 600, color: outcomeColor, margin: "8px 0 0" }}>
+          {outcomeLabel}
+        </p>
       </div>
 
       <div className="panel">

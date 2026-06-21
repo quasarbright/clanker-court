@@ -1,7 +1,8 @@
 import { useGame } from "../store/gameStore";
 
 export function CaseFileScreen() {
-  const { caseFile, playerRole, startTrial, busy } = useGame();
+  const { caseFile, playerRole, startTrial, setReady, busy, busyLabel,
+          multiplayerRole, hostReady, guestReady } = useGame();
   if (!caseFile) return null;
 
   return (
@@ -68,13 +69,41 @@ export function CaseFileScreen() {
 
       <div className="panel center stack">
         <p className="muted">
-          You are the <strong>{playerRole}</strong>. When you're ready, the trial begins.
+          You are the <strong>{playerRole}</strong>.{" "}
+          {multiplayerRole ? "When both players are ready, the trial begins." : "When you're ready, the trial begins."}
         </p>
-        <div>
+
+        {multiplayerRole ? (
+          <>
+            {busy ? (
+              <p className="busy"><span className="spin">⏳</span> {busyLabel}</p>
+            ) : (() => {
+              const myReady = multiplayerRole === "host" ? hostReady : guestReady;
+              const theirReady = multiplayerRole === "host" ? guestReady : hostReady;
+              return myReady ? (
+                <p className="busy">
+                  <span className="spin">⏳</span>{" "}
+                  {theirReady ? "Starting..." : "Waiting for opponent to be ready..."}
+                </p>
+              ) : (
+                <div className="stack" style={{ alignItems: "center", gap: 8 }}>
+                  {theirReady && (
+                    <p style={{ color: "var(--accent)", fontSize: "0.9rem", margin: 0 }}>
+                      Opponent is ready!
+                    </p>
+                  )}
+                  <button className="primary" onClick={() => setReady()}>
+                    Ready — begin trial
+                  </button>
+                </div>
+              );
+            })()}
+          </>
+        ) : (
           <button className="primary" onClick={() => startTrial()} disabled={busy}>
             Ready — begin trial
           </button>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -112,6 +112,9 @@ export interface Verdict {
 export interface TrialState {
   phase: Phase;
   playerRole: Role; // which side the human plays
+  multiplayerRole: null | "host" | "guest";
+  hostReady: boolean;
+  guestReady: boolean;
   trueStory: TrueStory | null;
   briefs: POIBrief[];
   caseFile: CaseFile | null;
