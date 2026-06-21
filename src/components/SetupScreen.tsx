@@ -131,8 +131,8 @@ export function SetupScreen() {
         <div className="center">
           <h1>⚖️ Clanker Court</h1>
           <p className="muted">
-            An LLM-powered courtroom trial. Play as defense or prosecution —
-            witnesses, opposing counsel, judge, and jury are all AI.
+            An LLM-powered trial. You're the attorney; the witnesses, opposing counsel, judge,
+            and jury are all AI. Generate a case and take it to trial.
           </p>
         </div>
         <div className="panel stack">
