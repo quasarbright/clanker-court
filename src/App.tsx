@@ -6,6 +6,7 @@ import { CaseFileScreen } from "./components/CaseFileScreen";
 import { CaseFileModal } from "./components/CaseFileModal";
 import { TrialView } from "./components/TrialView";
 import { VerdictScreen } from "./components/VerdictScreen";
+import { setApiKey, validateApiKey } from "./store/settings";
 
 function Screen({ onOpenCaseFile }: { onOpenCaseFile: () => void }) {
   const phase = useGame((s) => s.phase);
@@ -32,10 +33,14 @@ export default function App() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    const apiKey = params.get("api-key");
     const code = params.get("join");
-    if (code) {
+    if (apiKey || code) {
       history.replaceState(null, "", window.location.pathname);
-      joinGame(code);
+      if (apiKey) {
+        validateApiKey(apiKey).then((valid) => { if (valid) setApiKey(apiKey); });
+      }
+      if (code) joinGame(code);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -7,6 +7,7 @@ import {
   getSavedModel,
   saveModel,
   setApiKey,
+  validateApiKey,
 } from "../store/settings";
 
 async function fetchOpenRouterModels(): Promise<string[]> {
@@ -55,21 +56,12 @@ export function SettingsModal({ onClose, dismissable }: { onClose: () => void; d
   async function validateAndSave() {
     setValidating(true);
     setKeyError(null);
-    try {
-      const res = await fetch("https://openrouter.ai/api/v1/auth/key", {
-        headers: { Authorization: `Bearer ${key.trim()}` },
-      });
-      if (!res.ok) {
-        setKeyError("Invalid API key — check it and try again.");
-        setValidating(false);
-        return;
-      }
-    } catch {
-      setKeyError("Could not reach OpenRouter to validate the key.");
-      setValidating(false);
+    const valid = await validateApiKey(key);
+    setValidating(false);
+    if (!valid) {
+      setKeyError("Invalid API key — check it and try again.");
       return;
     }
-    setValidating(false);
     save();
   }
 

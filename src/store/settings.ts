@@ -1,4 +1,15 @@
 const KEY_STORAGE = "clanker.openrouter.key";
+
+export async function validateApiKey(key: string): Promise<boolean> {
+  try {
+    const res = await fetch("https://openrouter.ai/api/v1/auth/key", {
+      headers: { Authorization: `Bearer ${key.trim()}` },
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
 const MODEL_STORAGE = "clanker.openrouter.model";
 
 export const DEFAULT_MODEL = "openai/gpt-4o-mini";
